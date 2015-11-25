@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/darker_gray"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/WeekName"
+        android:text="日" />
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/WeekName"
+        android:text="一" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/WeekName"
+        android:text="二" />
+
+    <TextView
+        android:id="@+id/textView4"
+        style="@style/WeekName"
+        android:text="三" />
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/WeekName"
+        android:text="四" />
+
+    <TextView
+        android:id="@+id/textView6"
+       style="@style/WeekName"
+        android:text="五" />
+
+    <TextView
+        android:id="@+id/textView7"
+        style="@style/WeekName"
+        android:text="六" />
+
+</LinearLayout>

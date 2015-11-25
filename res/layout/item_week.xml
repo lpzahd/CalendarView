@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+    <include
+        android:id="@+id/week_sun"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        layout="@layout/style_week" />
+
+    <include
+        android:id="@+id/week_mon"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        layout="@layout/style_week" />
+
+    <include
+        android:id="@+id/week_tue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/style_week" />
+
+    <include
+        android:id="@+id/week_wed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/style_week" />
+
+    <include
+        android:id="@+id/week_thu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/style_week" />
+
+    <include
+        android:id="@+id/week_fri"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/style_week" />
+
+    <include
+        android:id="@+id/week_sat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/style_week" />
+
+</LinearLayout>
