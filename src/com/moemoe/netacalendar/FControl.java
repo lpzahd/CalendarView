@@ -75,8 +75,13 @@ public class FControl {
 	 */
 	private boolean isTrans;
 	
-	private ObjectAnimator lvObjectAnimator;
-	private ObjectAnimator calObjectAnimator;
+	/**
+	 * 动画是否执行结束
+	 */
+	private boolean isAnimEnd = true;
+	
+	private ObjectAnimator mObjectAnimator;
+	private ObjectAnimator sObjectAnimator;
 	
 	private ViewTransListener mViewListener;
 	private ViewTransListener sViewListener;
@@ -87,18 +92,6 @@ public class FControl {
 	 */
 	public void setMainViewTransListener(ViewTransListener listener){
 		mViewListener = listener;
-		
-		// 说明需要监听状态，由于有动画，需要监听动画结束状态
-		lvObjectAnimator.addListener(new SimpleAnimatorListener(){
-			@Override
-			public void onAnimationEnd(Animator animation) {
-				if(mMainView.getTranslationY() == 0){
-					mViewListener.isBottom();
-				} else {
-					mViewListener.isTop();
-				}
-			}
-		});
 	}
 	
 	/**
@@ -108,7 +101,7 @@ public class FControl {
 	public void setSecondViewTransListener(ViewTransListener listener){
 		sViewListener = listener;
 		
-		calObjectAnimator.addListener(new SimpleAnimatorListener(){
+		sObjectAnimator.addListener(new SimpleAnimatorListener(){
 			@Override
 			public void onAnimationEnd(Animator animation) {
 				if(mSecondView.getTranslationY() == 0){
@@ -131,15 +124,34 @@ public class FControl {
 	 * 初始化动画
 	 */
 	private void initAnimator(){
-		lvObjectAnimator = new ObjectAnimator();
-		lvObjectAnimator.setTarget(mMainView);
-		lvObjectAnimator.setPropertyName("translationY");
-		lvObjectAnimator.setInterpolator(null);	// kill default interpolator
+		mObjectAnimator = new ObjectAnimator();
+		mObjectAnimator.setTarget(mMainView);
+		mObjectAnimator.setPropertyName("translationY");
+		mObjectAnimator.setInterpolator(null);	// kill default interpolator
+		mObjectAnimator.addListener(new SimpleAnimatorListener(){
+			
+			@Override
+			public void onAnimationStart(Animator animation) {
+				isAnimEnd = false;
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				isAnimEnd = true;
+				if(mViewListener != null){
+					if(mMainView.getTranslationY() == 0){
+						mViewListener.isBottom();
+					} else {
+						mViewListener.isTop();
+					}
+				}
+			}
+		});
 		
-		calObjectAnimator = new ObjectAnimator();
-		calObjectAnimator.setTarget(mSecondView);
-		calObjectAnimator.setPropertyName("translationY");
-		calObjectAnimator.setInterpolator(null);
+		sObjectAnimator = new ObjectAnimator();
+		sObjectAnimator.setTarget(mSecondView);
+		sObjectAnimator.setPropertyName("translationY");
+		sObjectAnimator.setInterpolator(null);
 	}
 	
 	/**
@@ -204,6 +216,10 @@ public class FControl {
 				lastY = event.getY();
 				return false;
 			} else {
+				// 动画未结束前不允许执行平移事件
+				if(!isAnimEnd) {
+					return true;
+				}
 				// 处理 平移事件
 				runTransLation(event.getY(), lastY);
 				isTrans = true;
@@ -327,29 +343,29 @@ public class FControl {
 	}
 
 	private void upCalAnimator() {
-		calObjectAnimator.setFloatValues(mSecondView.getTranslationY(), -sTargetHeight);
-		calObjectAnimator
+		sObjectAnimator.setFloatValues(mSecondView.getTranslationY(), -sTargetHeight);
+		sObjectAnimator
 				.setDuration((long) ((sTargetHeight + mSecondView.getTranslationY()) / speed));
-		calObjectAnimator.start();
+		sObjectAnimator.start();
 	}
 
 	private void upLvAnimator() {
-		lvObjectAnimator.setFloatValues(mMainView.getTranslationY(), -mTargetHeight);
-		lvObjectAnimator
+		mObjectAnimator.setFloatValues(mMainView.getTranslationY(), -mTargetHeight);
+		mObjectAnimator
 				.setDuration((long) ((mTargetHeight + mMainView.getTranslationY()) / speed));
-		lvObjectAnimator.start();
+		mObjectAnimator.start();
 	}
 
 	private void downCalAnimator() {
-		calObjectAnimator.setFloatValues(mSecondView.getTranslationY(), 0);
-		calObjectAnimator.setDuration((long) ((-mSecondView.getTranslationY()) / speed));
-		calObjectAnimator.start();
+		sObjectAnimator.setFloatValues(mSecondView.getTranslationY(), 0);
+		sObjectAnimator.setDuration((long) ((-mSecondView.getTranslationY()) / speed));
+		sObjectAnimator.start();
 	}
 
 	private void downLvAnimator() {
-		lvObjectAnimator.setFloatValues(mMainView.getTranslationY(), 0);
-		lvObjectAnimator.setDuration((long) ((-mMainView.getTranslationY()) / speed));
-		lvObjectAnimator.start();
+		mObjectAnimator.setFloatValues(mMainView.getTranslationY(), 0);
+		mObjectAnimator.setDuration((long) ((-mMainView.getTranslationY()) / speed));
+		mObjectAnimator.start();
 	}
 
 	/**
